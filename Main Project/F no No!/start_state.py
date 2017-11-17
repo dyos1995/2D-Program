@@ -6,7 +6,7 @@ from pico2d import *
 name = "StartState"
 image = None
 logo_time = 0.0
-
+current_time =  0.0
 
 def enter():
     global image
@@ -29,11 +29,20 @@ def update(frame_time):
     logo_time += 0.01
 
 
+def get_frame_time():
+    global current_time
+
+    frame_time = get_time() - current_time
+    current_time += frame_time
+    return frame_time
+
+
 def draw(frame_time):
     global image
     clear_canvas()
     image.draw(400, 300)
     update_canvas()
+
 
 def handle_events(frame_time):
     events = get_events()

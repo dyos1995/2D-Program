@@ -5,6 +5,7 @@ from pico2d import *
 
 name = "TitleState"
 image = None
+current_time = 0.0
 
 
 def enter():
@@ -30,10 +31,19 @@ def handle_events(frame_time):
                 game_framework.change_state(main_state)
 
 
+def get_frame_time():
+    global current_time
+
+    frame_time = get_time() - current_time
+    current_time += frame_time
+    return frame_time
+
+
 def draw(frame_time):
     clear_canvas()
     image.draw(400, 300)
     update_canvas()
+
 
 def update(frame_time):
     pass

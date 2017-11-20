@@ -10,7 +10,7 @@ class Boy:
 
     #10픽셀당 3m
     PIXEL_PER_METER = (10.0 / 0.3)
-    RUN_SPEED_KMPH = 20.0
+    RUN_SPEED_KMPH = 10.0
     RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -40,8 +40,7 @@ class Boy:
             if self.state in (self.RIGHT_RUN, ):
                 self.state = self.RIGHT_STAND
         elif(event.type, event.key) ==(SDL_KEYDOWN, SDLK_SPACE):
-            self.plus =+ 1
-            if(self.plus == 1):
+            if self.jump_frames == 0:
                 self.jump_frames = 1
 
 
@@ -78,15 +77,17 @@ class Boy:
 
         # jump frame
         if self.jump_frames == 1:
-            self.y += 5
-            if self.y > 170:
+            self.y += distance * 3
+            self.jump += 1
+            if self.jump > 20:
                 self.jump_frames = 2
 
-        elif self.jump_frames == 2:
-            self.y -= 5
-            if self.y < 90:
-                self.plus = 0
+        if self.jump_frames == 2:
+            self.y -= distance * 3
+            self.jump -= 1
+            if self.jump < 0:
                 self.jump_frames = 0
+                self.y = 90
 
         if self.state == self.RIGHT_RUN:
             self.x = min(800, self.x + 5)
@@ -100,8 +101,8 @@ class Boy:
         self.frame = random.randint(0, 6)
         self.stand_frames = 0
         self.jump_frames = 0
+        self.jump = 0
         self.total_frames = 0.0
-        self.plus = 0
         self.dir = 0
         self.state = self.RIGHT_STAND
         self.name = 'noname'

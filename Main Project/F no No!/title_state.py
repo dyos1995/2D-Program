@@ -13,7 +13,6 @@ def enter():
     image = load_image('title.png')
     game_framework.reset_time()
 
-
 def exit():
     global image
     del(image)

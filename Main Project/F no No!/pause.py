@@ -4,29 +4,35 @@ from pico2d import *
 import main_state
 
 
-name = "PauseState"
+name = "Pause"
 image1 = None
 boy = None
 grass = None
 fallf = None
+grade = None
+font
 
-logo_tim = 0.0
+logo_time = 0.0
 
 
 def enter():
-    global image,  boy, grass, fallf
+    global image,  boy, grass, fallf, grade, font
     image = load_image('pause.png')
     boy = main_state.boy
     grass = main_state.grass
     fallf = main_state.fallf
+    grade = main_state.grade
+    font = main_state.font
 
 
 def exit():
-    global image, boy, grass, fallf
+    global image, boy, grass, fallf, grade, font
     del (image)
     del (boy)
     del (grass)
     del (fallf)
+    del (grade)
+    del (font)
 
 
 def handle_events():
@@ -42,21 +48,44 @@ def handle_events():
 
 def update(frame_time):
     global logo_time
-    logo_time = (logo_tim+1)%2
+    logo_time = (logo_time+1) % 2
 
 def draw():
-    global logo_tim
     clear_canvas()
-    if ( (logo_tim+1)%2 == 0):
-        image.draw(400,400)
-    else:
-        image.draw(10000,4000)
+    image.draw(400, 300)
     grass.draw()
-    main_state.boy.image.clip_draw(main_state.boy.frame * 100, 0, 100, 100, main_state.boy.x, main_state.boy.y)
+    boy.draw()
+    grade.draw()
+    font.draw()
+
+    # 떨어지는 장애물 떨어지는 코드
+    for fallfs in fallf:
+        fallfs.draw()
     update_canvas()
 
 
+def main():
+    global running
+    global current_time
 
+
+    enter()
+    running = True
+    current_time = get_time()
+
+    while running:
+        frame_time = get_frame_time()
+        handle_events(frame_time)
+        update(frame_time)
+
+        draw()
+        get_frame_time()
+
+    exit()
+
+
+if __name__ == '__Pause__':
+    main()
 
 
 def pause():

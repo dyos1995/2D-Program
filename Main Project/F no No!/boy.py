@@ -10,7 +10,7 @@ class Boy:
 
     #10픽셀당 3m
     PIXEL_PER_METER = (10.0 / 0.3)
-    RUN_SPEED_KMPH = 40.0
+    RUN_SPEED_KMPH = 20.0
     RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
     RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
     RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
@@ -44,6 +44,7 @@ class Boy:
             if(self.plus == 1):
                 self.jump_frames = 1
 
+
     #핸들 이벤트의 이동
     def handle_left_run(self,frame_time):
         self.dir = -1
@@ -70,7 +71,7 @@ class Boy:
         self.total_frames += 1.0
         self.x += (self.dir * distance)
 
-        if self.state >= 7:
+        if self.state >= 6:
             self.frame = int(self.total_frames + 1) % 6
         else:
             self.frame = int(self.total_frames + 1) % 2
@@ -80,6 +81,7 @@ class Boy:
             self.y += 5
             if self.y > 170:
                 self.jump_frames = 2
+
         elif self.jump_frames == 2:
             self.y -= 5
             if self.y < 90:
@@ -105,8 +107,6 @@ class Boy:
         self.name = 'noname'
         if Boy.image == None:
             Boy.image = load_image('run_animation.png')
-        if Boy.font == None:
-            Boy.font = load_font('ENCR10B.TTF', 30)
 
     #충돌 체크 사각형 생성
     def draw_bb(self):
@@ -115,6 +115,5 @@ class Boy:
     def get_bb(self):
         return self.x - 20, self.y - 50, self.x + 20, self.y + 45
 
-    def draw(self):
-        Boy.font.draw(320, 550, 'Time : %3.2f' % get_time(), (0, 120, 125))
+    def draw(self,frame_time):
         self.image.clip_draw(self.frame * 50, self.state * 100, 50, 100, self.x, self.y)

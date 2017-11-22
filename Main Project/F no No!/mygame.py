@@ -5,7 +5,7 @@ import main_state
 
 
 
-#game_framework.run(start_state)
-open_canvas(sync=True)
-game_framework.run(main_state)
-close_canvas()
+game_framework.run(start_state)
+#open_canvas(sync=True)
+#game_framework.run(main_state)
+#close_canvas()

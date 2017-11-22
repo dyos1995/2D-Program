@@ -129,7 +129,7 @@ def update(frame_time):
 
    # 0 ~ 20초 까지 속도
    if timer > 0 and timer < 20:
-       if counter % 7 == 0:
+       if counter % 6 == 0:
            Fcount += 1
            fallf.append(FallF())
 

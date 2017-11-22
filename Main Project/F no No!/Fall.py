@@ -81,7 +81,7 @@ class FallB():
 
     def __init__(self):
         self.x, self.y = 0.0, 0.0
-        self.x1, self.y1 = random.randint(0, 800), random.randint(300, 600)
+        self.x1, self.y1 = random.randint(100, 700), random.randint(400, 600)
         self.RUN_SPEED_KMPH = 2
         self.dir = 1
         self.pie = 3.141592 / 180
@@ -98,8 +98,8 @@ class FallB():
         RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
         self.fall_speed = RUN_SPEED_PPS * frame_time
-        self.cicle += self.fall_speed
-        self.rad += 2
+        self.cicle += self.fall_speed * 1.5
+        self.rad += 1
         self.x = self.cicle * math.cos(self.rad* self.pie) + self.x1
         self.y = self.cicle * math.sin(self.rad* self.pie) + self.y1
 

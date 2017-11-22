@@ -17,6 +17,9 @@ from Fall import FallC
 from Fall import FallB
 from Fall import FallA
 from grade import Grade
+from random_box import RandB
+from random_box import Cloud
+from random_box import Shield
 
 name = "MainState"
 image = None
@@ -26,10 +29,16 @@ fallf = None
 grade = None
 font = None
 running = None
-judge = 0
+randb = None
+cloud = None
+shield = None
+judge1 = 0
+judge2 = 0
 counter = 0
 Fcount = 0
 timer = 0.0
+timer2 = 0.0
+timer3 = 0.0
 current_time = 0.0
 
 def handle_events(frame_time):
@@ -48,10 +57,13 @@ def handle_events(frame_time):
 
 
 def create_world():
-    global boy, grass, fallf, grade
+    global boy, grass, fallf, grade, randb, cloud, shield
     boy = Boy()
+    randb = []
+    shield = Shield()
     grass = Grass()
     grade = Grade()
+    cloud = Cloud()
     fallf = []
 
 
@@ -68,13 +80,16 @@ def enter():
 
 
 def exit():
-    global boy, grass, fallf, grade
+    global boy, grass, fallf, grade, randb, cloud, shield
     global image
     del(image)
+    del(shield)
+    del(randb)
     del(boy)
     del(fallf)
     del(grass)
     del(grade)
+    del(cloud)
 
 def pause():
     pass
@@ -96,57 +111,109 @@ def collide(a, b):
 def update(frame_time):
    global counter
    global Fcount
-   global timer
+   global timer, timer2, timer3
+   global judge1, judge2
    global boy, grade, fallf, grass
-   frand = random.randint(1, 10)
-   crand = random.randint(1, 10)
-   krand = random.randint(1, 3)
+   frand = random.randint(1, 100)
+   crand = random.randint(1, 40)
+   krand = random.randint(1, 200)
    counter += 1
    timer += 0.01
 
    boy.update(frame_time)
    grade.update(frame_time)
+   cloud.update(frame_time)
+   shield.update(frame_time)
+   if krand == 3:
+       randb.append(RandB())
 
-   if counter % 7 == 0:
-       Fcount += 1
+   # 0 ~ 20초 까지 속도
+   if timer > 0 and timer < 20:
+       if counter % 7 == 0:
+           Fcount += 1
+           fallf.append(FallF())
+
+   # 20 ~ 40초 까지 속도
+   if timer > 20 and timer < 40:
+       if counter % 10 == 0:
+           fallf.append(FallF())
+       if counter % 14 == 0:
+           fallf.append(FallC())
+
+   # 20 ~ 40초 까지 속도
+   if timer > 40 and timer < 60:
+       if counter % 20 == 0:
+           fallf.append(FallF())
+       if counter % 25 == 0:
+           fallf.append(FallC())
        if frand == 3:
            fallf.append(FallB())
-       if timer > 30:
-           if krand == 2:
-               fallf.append(FallC())
-           if timer > 60:
-               if frand == 3:
-                   fallf.append(FallB())
-               if timer > 90:
-                   if crand == 3:
-                       fallf.append(FallA())
 
-# 시간 초별 다른 결과 값
+   # 40 ~ 60초 까지 속도
+   if timer > 60 and timer < 80:
+       if counter % 20 == 0:
+           fallf.append(FallF())
+       if counter % 25 == 0:
+           fallf.append(FallC())
+       if frand == 3:
+           fallf.append(FallB())
+       if crand == 3:
+           fallf.append(FallA())
+
+# 랜덤 박스 ~~~~~~~~~~~~
+   if judge1 == 1:
+       timer2 += 0.01
+   if judge2 == 1:
+       timer3 += 0.01
+
+
+   for randbs in randb:
+       randbs.update(frame_time)
+       if collide(grass, randbs):
+           randb.remove(randbs)
+       if collide(boy, randbs):
+           print("%d"  %randbs.dir)
+           # 구름
+           if randbs.dir == 1:
+               judge1 = 1
+           # 무적도
+           if randbs.dir == 2:
+               judge2 = 1
+           randb.remove(randbs)
+
+
+
+
+# 시간 초별 다른 결과 값 / F가 떨어진다네
    for fallfs in fallf:
        fallfs.update(frame_time)
        if fallfs.dir == 5:
            fallf.remove(fallfs)
 
        if collide(boy, fallfs):
-           if timer > 0 and timer < 30:
+           if timer > 0 and timer < 20:
                game_framework.push_state(paperf_state)
-           if timer > 30 and timer < 60:
+           if timer > 20 and timer < 40:
                game_framework.push_state(paperc_state)
-           if timer > 60 and timer < 90:
+           if timer > 40 and timer < 60:
                game_framework.push_state(paperb_state)
-           if timer > 90 and timer < 120:
+           if timer > 60 and timer < 80:
                game_framework.push_state(papera_state)
 # 땅에 충돌시 fallf의 리스트내 fallf 삭제
        if collide(grass, fallfs):
             fallf.remove(fallfs)
-
+       if judge2 == 1:
+           if collide(shield, fallfs):
+               fallf.remove(fallfs)
 
 
 
 # 그리기 함수
 def draw(frame_time):
-    global boy, grade, fallf, grass
-    global timer
+    global boy, grade, fallf, grass, randb
+    global timer, timer2, timer3
+    global judge1, judge2
+
     clear_canvas()
     image.draw(400, 300)
     grass.draw()
@@ -158,13 +225,32 @@ def draw(frame_time):
     #떨어지는 장애물 떨어지는 코드
     for fallfs in fallf:
         fallfs.draw()
-
+    for randbs in randb:
+        randbs.draw()
     # 충돌 경계선 그리기
-    grass.draw_bb()
-    boy.draw_bb()
+#    grass.draw_bb()
+#    boy.draw_bb()
 
-    for fallfs in fallf:
-        fallfs.draw_bb()
+#    for fallfs in fallf:
+#        fallfs.draw_bb()
+
+#    for randbs in randb:
+#        randbs.draw_bb()
+
+# 구름 등장!!!!
+    if judge1 == 1:
+        cloud.draw()
+        if timer2 > 3.0:
+            judge1 = 0
+            timer2 = 0.0
+
+    if judge2 == 1:
+        shield.draw()
+ #       shield.draw_bb()
+        if timer3 > 5.0:
+            judge2 = 0
+            timer3 = 0.0
+
     update_canvas()
 
 #메인 함수

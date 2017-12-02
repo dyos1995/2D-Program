@@ -12,10 +12,10 @@ import paperf_state
 
 from boy import Boy
 from grass import Grass
-from Fall import FallF
-from Fall import FallC
-from Fall import FallB
-from Fall import FallA
+from Falls import FallF
+from Falls import FallC
+from Falls import FallB
+from Falls import FallA
 from grade import Grade
 from random_box import RandB
 from random_box import Cloud
@@ -199,6 +199,7 @@ def update(frame_time):
                game_framework.push_state(paperb_state)
            if timer > 60 and timer < 80:
                game_framework.push_state(papera_state)
+
 # 땅에 충돌시 fallf의 리스트내 fallf 삭제
        if collide(grass, fallfs):
             fallf.remove(fallfs)

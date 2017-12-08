@@ -17,9 +17,9 @@ from Falls import FallC
 from Falls import FallB
 from Falls import FallA
 from grade import Grade
-from random_box import RandB
-from random_box import Cloud
-from random_box import Shield
+from random_boxs import RandB
+from random_boxs import Cloud
+from random_boxs import Shield
 
 name = "MainState"
 image = None

@@ -5,6 +5,7 @@ from pico2d import *
 class Boy:
     image = None
     font = None
+    hit_sound = None
 
     global judge
 
@@ -107,6 +108,13 @@ class Boy:
         self.name = 'noname'
         if Boy.image == None:
             Boy.image = load_image('run_animation.png')
+        if Boy.hit_sound == None:
+            Boy.hit_sound = load_wav('touch.wav')
+            Boy.hit_sound.set_volume(32)
+
+
+    def hit(self, ball):
+        self.hit_sound.play()
 
     #충돌 체크 사각형 생성
     def draw_bb(self):

@@ -191,6 +191,7 @@ def update(frame_time):
            fallf.remove(fallfs)
 
        if collide(boy, fallfs):
+           boy.hit(fallfs)
            if timer > 0 and timer < 20:
                game_framework.push_state(paperf_state)
            if timer > 20 and timer < 40:

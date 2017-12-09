@@ -5,12 +5,17 @@ from pico2d import *
 
 name = "TitleState"
 image = None
+bgm = None
 current_time = 0.0
 
 
 def enter():
     global image
+    global bgm
     image = load_image('title.png')
+    bgm = load_music('load_sub_sound.mp3')
+    bgm.set_volume(64)
+    bgm.repeat_play()
     game_framework.reset_time()
 
 def exit():

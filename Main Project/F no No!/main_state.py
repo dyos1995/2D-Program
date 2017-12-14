@@ -200,13 +200,13 @@ def update(frame_time):
                game_framework.push_state(paperb_state)
            if timer > 60 and timer < 80:
                game_framework.push_state(papera_state)
-
-# 땅에 충돌시 fallf의 리스트내 fallf 삭제
-       if collide(grass, fallfs):
-            fallf.remove(fallfs)
        if judge2 == 1:
            if collide(shield, fallfs):
                fallf.remove(fallfs)
+# 땅에 충돌시 fallf의 리스트내 fallf 삭제
+       if collide(grass, fallfs):
+            fallf.remove(fallfs)
+
 
 
 

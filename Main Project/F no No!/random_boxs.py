@@ -4,6 +4,7 @@ from pico2d import *
 
 class RandB():
     image = None
+    fired = None
 
     def __init__(self):
         self.x, self.y = random.randint(0, 800), 600
@@ -22,6 +23,8 @@ class RandB():
         self.fall_speed = RUN_SPEED_PPS * frame_time
         self.y -= self.fall_speed
 
+    def hit(self):
+        self.fired.play()
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -48,14 +51,12 @@ class Cloud():
         if Cloud.image == None:
             Cloud.image = load_image('cloud.png')
 
-
     def update(self, frame_time):
         if self.judge == 1:
             print("%f" %self.timer1)
             self.timer1 += frame_time
             if self.timer1 > 1.0:
                 self.judge = 0
-
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -82,7 +83,6 @@ class Shield():
         if Shield.image == None:
             Shield.image = load_image('ShieldB.png')
 
-
     def update(self, frame_time):
         self.x = main_state.boy.x
         self.y = main_state.boy.y
@@ -95,6 +95,7 @@ class Shield():
 
     def draw(self):
         self.image.draw(self.x, self.y)
+
 
     def stop(self):
         self.fall_speed = 0

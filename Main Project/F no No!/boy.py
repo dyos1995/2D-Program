@@ -6,6 +6,9 @@ class Boy:
     image = None
     font = None
     hit_sound = None
+    make_shield = None
+    make_cloud = None
+    fired = None
 
     global judge
 
@@ -111,10 +114,27 @@ class Boy:
         if Boy.hit_sound == None:
             Boy.hit_sound = load_wav('touch.wav')
             Boy.hit_sound.set_volume(32)
-
+        if Boy.make_shield == None:
+            Boy.make_shield = load_wav('shieldSound.wav')
+            Boy.make_shield.set_volume(100)
+        if Boy.make_cloud == None:
+            Boy.make_cloud = load_wav('makecloud.wav')
+            Boy.make_cloud.set_volume(100)
+        if Boy.fired == None:
+            Boy.fired = load_wav('yourfired.wav')
+            Boy.fired.set_volume(70)
 
     def hit(self, ball):
         self.hit_sound.play()
+
+    def fire_hit(self):
+        self.fired.play()
+
+    def shield_hit(self):
+        self.make_shield.play()
+
+    def cloud_hit(self):
+        self.make_cloud.play()
 
     #충돌 체크 사각형 생성
     def draw_bb(self):

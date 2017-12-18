@@ -1,22 +1,26 @@
 import game_framework
 import main_state
 from pico2d import *
+from DeadEffect import DeadEffection
 
 
 name = "Paperf"
 image = None
+deadeffection = None
 current_time = 0.0
 
 
 def enter():
-    global image
+    global image, deadeffection
+    deadeffection = DeadEffection()
     image = load_image('paper F.png')
     game_framework.reset_time()
 
 
 def exit():
-    global image
+    global image,deadeffection
     del(image)
+    del(deadeffection)
 
 
 def handle_events(frame_time):
@@ -42,6 +46,7 @@ def get_frame_time():
 def draw(frame_time):
     clear_canvas()
     image.draw(400, 300)
+    deadeffection.draw()
     update_canvas()
 
 

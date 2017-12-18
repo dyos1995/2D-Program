@@ -2,7 +2,6 @@ import game_framework
 import main_state
 from pico2d import *
 
-
 name = "Papera"
 image = None
 current_time = 0.0
@@ -10,6 +9,7 @@ current_time = 0.0
 
 def enter():
     global image
+
     image = load_image('paper A.png')
     game_framework.reset_time()
 
@@ -42,6 +42,7 @@ def get_frame_time():
 def draw(frame_time):
     clear_canvas()
     image.draw(400, 300)
+    deadeffection.draw()
     update_canvas()
 
 

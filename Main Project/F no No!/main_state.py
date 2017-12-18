@@ -17,6 +17,7 @@ from Falls import FallC
 from Falls import FallB
 from Falls import FallA
 from grade import Grade
+
 from random_boxs import RandB
 from random_boxs import Cloud
 from random_boxs import Shield
@@ -32,6 +33,8 @@ running = None
 randb = None
 cloud = None
 shield = None
+
+
 judge1 = 0
 judge2 = 0
 counter = 0
@@ -70,8 +73,9 @@ def create_world():
 def enter():
     global image
     global font
-    global timer
+    global timer,judge1
     timer = 0.0
+    judge1 = 0
     image = load_image('main_picture.png')
     font = load_font('ENCR10B.TTF', 30)
     game_framework.reset_time()
@@ -80,8 +84,8 @@ def enter():
 
 
 def exit():
-    global boy, grass, fallf, grade, randb, cloud, shield
-    global image
+    global boy, grass, fallf, grade, randb, shield
+    global image, judge1
     del(image)
     del(shield)
     del(randb)
@@ -89,7 +93,7 @@ def exit():
     del(fallf)
     del(grass)
     del(grade)
-    del(cloud)
+
 
 def pause():
     pass
@@ -112,8 +116,9 @@ def update(frame_time):
    global counter
    global Fcount
    global timer, timer2, timer3
+   global cloud
    global judge1, judge2
-   global boy, grade, fallf, grass
+   global boy, grade, fallf, grass, randb, shield
    frand = random.randint(1, 100)
    crand = random.randint(1, 40)
    krand = random.randint(1, 200)
@@ -124,24 +129,25 @@ def update(frame_time):
    grade.update(frame_time)
    cloud.update(frame_time)
    shield.update(frame_time)
+
    if krand == 3:
        randb.append(RandB())
 
    # 0 ~ 20초 까지 속도
-   if timer > 0 and timer < 20:
+   if timer > 0 and timer < 10:
        if counter % 6 == 0:
            Fcount += 1
            fallf.append(FallF())
 
    # 20 ~ 40초 까지 속도
-   if timer > 20 and timer < 40:
+   if timer > 10 and timer < 20:
        if counter % 10 == 0:
            fallf.append(FallF())
        if counter % 14 == 0:
            fallf.append(FallC())
 
    # 20 ~ 40초 까지 속도
-   if timer > 40 and timer < 60:
+   if timer > 20 and timer < 30:
        if counter % 20 == 0:
            fallf.append(FallF())
        if counter % 25 == 0:
@@ -150,7 +156,7 @@ def update(frame_time):
            fallf.append(FallB())
 
    # 40 ~ 60초 까지 속도
-   if timer > 60 and timer < 80:
+   if timer > 30 and timer < 40:
        if counter % 20 == 0:
            fallf.append(FallF())
        if counter % 25 == 0:
@@ -175,12 +181,13 @@ def update(frame_time):
            print("%d"  %randbs.dir)
            # 구름
            if randbs.dir == 1:
+               boy.shield_hit()
                judge1 = 1
            # 무적도
            if randbs.dir == 2:
+               boy.cloud_hit()
                judge2 = 1
            randb.remove(randbs)
-
 
 
 
@@ -192,14 +199,16 @@ def update(frame_time):
 
        if collide(boy, fallfs):
            boy.hit(fallfs)
-           if timer > 0 and timer < 20:
+           boy.fire_hit()
+           if timer > 0 and timer < 10:
                game_framework.push_state(paperf_state)
-           if timer > 20 and timer < 40:
+           if timer > 10 and timer < 20:
                game_framework.push_state(paperc_state)
-           if timer > 40 and timer < 60:
+           if timer > 20 and timer < 30:
                game_framework.push_state(paperb_state)
-           if timer > 60 and timer < 80:
+           if timer > 30 and timer < 40:
                game_framework.push_state(papera_state)
+
        if judge2 == 1:
            if collide(shield, fallfs):
                fallf.remove(fallfs)
@@ -212,7 +221,7 @@ def update(frame_time):
 
 # 그리기 함수
 def draw(frame_time):
-    global boy, grade, fallf, grass, randb
+    global boy, grade, fallf, grass, randb, cloud
     global timer, timer2, timer3
     global judge1, judge2
 

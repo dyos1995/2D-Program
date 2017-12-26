@@ -113,7 +113,7 @@ class Boy:
             Boy.image = load_image('run_animation.png')
         if Boy.hit_sound == None:
             Boy.hit_sound = load_wav('touch.wav')
-            Boy.hit_sound.set_volume(32)
+            Boy.hit_sound.set_volume(50)
         if Boy.make_shield == None:
             Boy.make_shield = load_wav('shieldSound.wav')
             Boy.make_shield.set_volume(100)
@@ -122,7 +122,7 @@ class Boy:
             Boy.make_cloud.set_volume(100)
         if Boy.fired == None:
             Boy.fired = load_wav('yourfired.wav')
-            Boy.fired.set_volume(70)
+            Boy.fired.set_volume(100)
 
     def hit(self, ball):
         self.hit_sound.play()

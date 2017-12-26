@@ -197,6 +197,10 @@ def update(frame_time):
        if fallfs.dir == 5:
            fallf.remove(fallfs)
 
+# 땅에 충돌시 fallf의 리스트내 fallf 삭제
+       if collide(grass, fallfs):
+           fallf.remove(fallfs)
+
        if collide(boy, fallfs):
            boy.hit(fallfs)
            boy.fire_hit()
@@ -212,9 +216,7 @@ def update(frame_time):
        if judge2 == 1:
            if collide(shield, fallfs):
                fallf.remove(fallfs)
-# 땅에 충돌시 fallf의 리스트내 fallf 삭제
-       if collide(grass, fallfs):
-            fallf.remove(fallfs)
+
 
 
 

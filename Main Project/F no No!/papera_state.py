@@ -42,7 +42,6 @@ def get_frame_time():
 def draw(frame_time):
     clear_canvas()
     image.draw(400, 300)
-    deadeffection.draw()
     update_canvas()
 
 
